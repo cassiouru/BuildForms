@@ -1,0 +1,34 @@
+﻿@page
+@model BuildForms.Pages.AnswerModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Answer";
+    var indice = 1;
+}
+
+<br />
+<br />
+<table border="1" style="margin-left: auto; margin-right: auto; text-align: center">
+    <thead style="background-color: silver">
+        <tr>
+            <td>Respostas do form</td>
+            <th>Detalhes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var answers in Model.Answers)
+        {
+            <tr>
+                <td>
+                    Formulário de <strong>@answers.Form.Title</strong> @indice º resposta
+                </td>
+                <td>
+                    <a asp-page="AnswerDetail" asp-route-id="@answers.Id">Vizualizar form</a>
+                </td>
+            </tr>
+            <div style="display: none">@(indice++)</div>
+        }
+    </tbody>
+</table>
+

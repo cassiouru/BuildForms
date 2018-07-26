@@ -1,0 +1,51 @@
+﻿@page
+
+@model BuildForms.Pages.IndexModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "ListForms";
+}
+
+<div style=" text-align: center;">
+    <br />
+    <br />
+    <a asp-page="Create">Cadastrar formulário</a>
+    <br />
+    <br />
+    <table border="1" style="margin-left: auto; margin-right: auto; text-align: center">
+        <thead style="background-color: silver">
+            <tr>
+                <th>
+                    Nome do formulário
+                </th>
+
+                <th>
+                    Responder formulário
+                </th>
+                <th>
+                    Vizualizar respostas
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var form in Model.Forms)
+            {
+                <tr>
+                    <td>
+                        @form.Title
+                    </td>
+
+                    <td>
+                        <a asp-page="Details" asp-route-id="@form.Id">Vizualizar form</a>
+                    </td>
+
+                    <td>
+                        <a asp-page="Answer" asp-route-formId="@form.Id">Vizualizar respostas</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,88 @@
+﻿@page
+@model BuildForms.Pages.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    int indice = 0;
+}
+
+
+<br />
+<br />
+ 
+<div style="text-align: center">
+    <fieldset>
+        <legend>@Model.Form.Title</legend>
+
+        <form method="@Model.Form.Method.ToString().ToLower()" action="@Model.Form.Action">
+            <input type="hidden" name="model.FormId" value="@Model.Form.Id" />
+
+            @foreach (var item in Model.Form.FormItens)
+            {
+
+                <input type="hidden" name="model.Answers[@indice].FormItemId" value="@item.Id" />
+                <input type="hidden" name="model.Answers[@indice].Question" value="@item.Description" />
+
+                <h3>@item.Description</h3>
+
+                switch (item.Type.ToString().ToLower())
+                {
+                    case "textarea":
+                        {
+
+                            @:<textarea name="model.Answers[@indice].Answer" placeholder="@item.Placeholder" required="@item.Required"></textarea>
+                            <br />
+                            break;
+                        }
+                    case "select":
+                        {
+
+                            <select name="model.Answers[@indice].Answer">
+                                @foreach (var opt in item.Options)
+                                {
+                                    <option value="@opt.Key">@opt.Value</option>
+                                }
+                            </select>
+                            <br />
+                            break;
+                        }
+                    case "radio":
+                        {
+
+                            @foreach (var opt in item.Options)
+                            {
+                                <label>@opt.Value</label>
+                                <input type="radio" name='model.Answers[@indice].Answer' value="@opt.Key" />
+                                <br />
+                            }
+                            break;
+                        }
+                    case "checkbox":
+                        {
+
+                            @foreach (var opt in item.Options)
+                            {
+                                <label>@opt.Value</label>
+                                <input type="checkbox" name='model.Answers[@indice].Answer' value="@opt.Value" />
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            <input type="@item.Type" name="model.Answers[@indice].Answer" placeholder="@item.Placeholder" required="@item.Required" />
+                            <br />
+                            break;
+                        }
+
+
+                }
+
+                <div style="display:none">@(indice++)</div>
+
+            }
+            <br />
+            <br />
+            <button type="submit">Salvar</button>
+        </form>
+    </fieldset>
+</div>

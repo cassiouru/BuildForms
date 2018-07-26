@@ -1,0 +1,140 @@
+﻿@page
+@model BuildForms.Pages.CreateModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<br />
+<br />
+
+<div style="text-align: center">
+    <form method="post">
+        <fieldset>
+            <legend>Cadastro de formulario</legend>
+            <label>Nome do formulário</label>
+            <input type="text" asp-for="Form.Title" />
+            <input type="hidden" asp-for="Form.Action" value="form/create" />
+            <br /><br />
+            <label>Form method</label>
+            <select asp-for="Form.Method">
+                <option value="Post">Post</option>
+                <option value="Get">Get</option>
+            </select>
+            <br /><br />
+            <table border="1" style="margin-left: auto; margin-right: auto; text-align: center">
+                <tr>
+                    <td>Descrição: </td>
+                    <td>
+                        <input type="text" id="txtDescription" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tipo do campo: </td>
+                    <td>
+                        <select id="txtType">
+                            <option value="0">Text</option>
+                            <option value="1">Radio</option>
+                            <option value="2">Checkbox</option>
+                            <option value="3">Select</option>
+                            <option value="4">Textares</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Placeholder: </td>
+                    <td>
+                        <input type="text" id="txtPlaceholder" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Obrigatório: </td>
+                    <td>
+                        <select id="txtRequired">
+                            <option value="false">false</option>
+                            <option value="true">true</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Opções: </td>
+                    <td>
+                        <input type="hidden" id="txtKey" />
+                        <input type="text" id="txtValue" />
+                        <input type="button" id="btnAddOption" value="Adicionar opção" />
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <div id="selectOptions"></div>
+            <br />
+            <input type="button" id="btnAdd" style="font-size: 20px" value="Adicionar campo" />
+            <br />
+            <br />
+            <table style="margin-left: auto; margin-right: auto; text-align: center">
+                <tr>
+                    <td>
+                        <div id="divResult"></div>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <br />
+        <input type="submit" value="Salvar formulário" style="font-size: 20px" />
+    </form>
+</div>
+
+<script type="text/javascript">
+    let result = document.querySelector('#divResult');
+    let selectOptions = document.querySelector('#selectOptions');
+
+    let indice = 0;
+    let indiceOption = 0;
+
+    document.querySelector('#btnAdd').addEventListener('click', () => {
+
+        let description = document.querySelector('#txtDescription').value;
+        let type = document.querySelector('#txtType').value;
+        let placeholder = document.querySelector('#txtPlaceholder').value;
+        let required = document.querySelector('#txtRequired').value;
+
+
+        result.innerHTML += `
+                    Indice ${indice}
+
+                    <label>Description: ${description}<label>
+                    <input type="text" name="Form.FormItens[${indice}].Description" value="${description}"/>
+
+                    <label>Type: ${type}<label>
+                    <input type="text" name="Form.FormItens[${indice}].Type" value="${type}"/>
+
+                    <label>Placeholder: ${placeholder}<label>
+                    <input type="text" name="Form.FormItens[${indice}].Placeholder" value="${placeholder}"/>
+
+                    <label>Required: ${required}<label>
+                    <input type="text" name="Form.FormItens[${indice}].Required" value="${required}"/>
+                    <br/>
+        `;
+
+        indice++;
+        indiceOption = 0;
+    });
+
+    document.querySelector('#btnAddOption').addEventListener('click', () => {
+
+        let key = document.querySelector('#txtKey').value;
+        let value = document.querySelector('#txtValue').value;
+
+        selectOptions.innerHTML += `
+                    <label>Key[${indice}]: ${key}<label>
+                    <input type="hidden" name="Form.FormItens[${indice}].Options[${indiceOption}].Key" value="${value}"/>
+
+                    @*<label>Value: ${value}<label>*@
+                    <input type="text" name="Form.FormItens[${indice}].Options[${indiceOption}].Value" value="${value}"/>
+                    <br/>
+        `;
+
+        indiceOption++;
+    });
+</script>
